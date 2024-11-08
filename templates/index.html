@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Liveness Detection</title>
+    <style>
+        video {
+            width: 100%;
+            height: auto;
+            border: 1px solid black;
+        }
+        #prediction {
+            font-size: 20px;
+            font-weight: bold;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <h1>Face Liveness Detection</h1>
+    <video id="video" autoplay></video>
+    <p id="prediction">Prediction: Waiting for the face...</p>
+
+    <script>
+        const video = document.getElementById('video');
+        const predictionText = document.getElementById('prediction');
+
+        // Access webcam
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(stream) {
+                video.srcObject = stream;
+                video.play();
+            })
+            .catch(function(err) {
+                console.log("Error accessing webcam: " + err);
+            });
+
+        // Capture frames and send to the server
+        function captureFrame() {
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const frameData = canvas.toDataURL('image/jpeg');
+
+            // Send frame data to backend
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ image: frameData })
+            })
+            .then(response => response.json())
+            .then(data => {
+                predictionText.textContent = `Prediction: ${data.prediction}`;
+            })
+            .catch(error => {
+                console.error("Error in prediction:", error);
+            });
+        }
+
+        // Continuously capture frames every 100ms
+        setInterval(captureFrame, 100);
+    </script>
+</body>
+</html>
