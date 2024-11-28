@@ -1,20 +1,4 @@
 To use this facial recognition code, please follow these steps:
-
-    Ensure that you have the required dependencies installed, including OpenCV, NumPy, and TensorFlow.
-    Download the Haar cascade file for face detection and save it as "haarcascade_frontalface_default.xml" in the same directory as this code.
-    Download the pre-trained TensorFlow model for object recognition and save it as "model.h5" in the same directory as this code.
-    Prepare a reference image that you want to compare the detected faces with and save it as "test.PNG" in the same directory.
-    Connect a webcam to your computer and ensure it is properly set up.
-    Run the code and grant necessary permissions for accessing the webcam.
-    The code will continuously capture frames from the webcam, detect and label faces, and display the results in a window.
-    If a detected face matches the reference image above a certain threshold, an alert message will be displayed on the frame.
-    Press the 'q' key to exit the program.
-hii stuff inatumia web cam juu hyo ndio nlikua natumia kutest.so ukitaka kuweka cctv utachange kiasi tu from "cap = cv2.VideoCapture(0)" to 
-"cap = cv2.VideoCapture("rtsp://username:password@your_cctv_camera_url")"..this utakua unacapture image from CCTV.
-also this code compares the captured image with one photo,you will need to connect it to a database with images, example employees images.for the code to compare the captured image from cctv to a data base you might also need some few changes here and there,,worry not!!,,i gatchu!!
-
-
-
 import cv2
 import numpy as np
 import mysql.connector
@@ -65,7 +49,7 @@ cursor.close()
 conn.close()
 
 
-hapa Tutatumia:
+mysql.connector :   
 mysql.connector library to establish a connection to a MySQL database. Make sure to replace the placeholders 'your_host', 'your_username', 'your_password', and 'your_database' with the actual connection details of your MySQL database.
 
 Assuming you have a table named images in your database, the code retrieves the image blob from the database using a query. Modify the query to suit your database schema and table structure. The image ID is specified as image_id = 1 in this example, so adjust it based on the ID of the image you want to retrieve from the database.
@@ -74,4 +58,3 @@ The retrieved image blob is then converted to a NumPy array using np.frombuffer,
 
 After that, you can continue with the rest of the code as before to perform face detection, object recognition, and image matching using the retrieved image.
 
-Usisahau kuhandle errors and exceptions appropriately when working with databases to ensure proper connection management and data retrieval.usiteseke bure..hahaha!!..good luck!!
